@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group 'org.tihana'
+version '1.0.0'
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    testImplementation 'junit:junit:4.12'
+}
+
+tasks.withType(Test) {
+    maxParallelForks = 1
+    outputs.upToDateWhen { false }
+    testLogging.events "passed", "skipped", "failed"
+    testLogging.exceptionFormat = 'full'
+    testLogging.showStandardStreams = true
+}
+
+defaultTasks 'clean', 'test'
