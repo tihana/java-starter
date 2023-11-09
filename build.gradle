@@ -1,34 +1,36 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'org.tihana'
 version '1.0.0'
-
-targetCompatibility = 1.8
-sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
-    testImplementation 'junit:junit:4.12'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+
+    testImplementation platform('org.junit:junit-bom:5.10.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.withType(Test) {
+test {
+    useJUnitPlatform()
     maxParallelForks = 1
     outputs.upToDateWhen { false }
-    testLogging.events "passed", "skipped", "failed"
-    testLogging.exceptionFormat = 'full'
-    testLogging.showStandardStreams = true
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat = 'full'
+        showStandardStreams = true
+    }
 }
 
-task run(type: JavaExec) {
-    description = 'Run the main class with JavaExec task'
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'org.tihana.Solution'
+application {
+    mainClass = 'org.tihana.Solution'
 }
 
 defaultTasks 'clean', 'test'
